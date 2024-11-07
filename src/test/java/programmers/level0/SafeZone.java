@@ -35,20 +35,22 @@ public class SafeZone {
 //	모든 지역에 지뢰가 있으므로 안전지역은 없습니다. 따라서 0을 return합니다.
 
 	public int solution(int[][] board) {
-		int[] checkPointsY = new int[] { 1, 1, 1, 0, 0, -1, -1, -1 };
-		int[] checkPointsX = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+		int[][] checkPoints = new int[][] {
+			{1, -1}, {1, 0}, {1, 1},
+			{0, -1},          {0, 1},
+			{-1, -1}, {-1, 0}, {-1, 1}
+		};
 		int boardLengthY = board.length;
 		for (int y = 0; y < board.length; y++) {
 			int boardLengthX = board[y].length;
 			for (int x = 0; x < boardLengthX; x++) {
 				int isBomb = board[x][y];
-				if (isBomb != 1) continue;
-				for (int cpy : checkPointsY) {
-					for (int cpx : checkPointsX) {
-						int checkPointX = (x + cpx);
-						int checkPointY = (y + cpy);
-						if (checkPointX >= 0 && checkPointX < boardLengthX &&
-							checkPointY >= 0 && checkPointY < boardLengthY) {
+				if (isBomb == 1) {
+					for (int[] checkPoint : checkPoints) {
+						int checkPointY = (y  + checkPoint[0]);
+						int checkPointX = (x + checkPoint[1]);
+						if (checkPointY >= 0 && checkPointY < boardLengthY &&
+							checkPointX >= 0 && checkPointX < boardLengthX) {
 							if (board[checkPointX][checkPointY] == 0) {
 								board[checkPointX][checkPointY] = 2;
 							}
